@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbarAlwaysDrawHorizontalTrack="true"
+    tools:context=".activities.MovieDetailActivity"
+    tools:showIn="@layout/activity_movie_detail">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBaseDark"
+            android:id="@+id/poster"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            android:textColor="#353535"
+            android:textStyle="bold"
+            android:textSize="27dp"
+            android:paddingLeft="10dp"
+            android:layout_below="@+id/poster"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/trailer"
+            android:textColor="@color/material_deep_teal_200"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:text="@string/watch_trailer"
+            android:paddingLeft="10dp"
+            android:layout_below="@+id/ratingBar"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="loadReviews"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/trailerList"
+            android:textSize="20dp"
+            android:textColor="#2f2f2f"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/overview"
+            android:textStyle="italic"
+            android:textAlignment="center"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/overview"
+            android:paddingLeft="10dp"
+            android:textSize="25dp"
+            android:textColor="#2f2f2f"
+            android:layout_marginTop="10dp"
+            android:id="@+id/release"
+            android:textAlignment="center"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rating"
+            android:layout_below="@+id/release"
+            android:textSize="2dp"
+            android:textColor="#2f2f2f"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:textAlignment="center"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible"/>
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBar"
+            android:layout_below="@+id/name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            />
+
+
+        <com.example.shashankkalra.popularmovies.viewsfragments.NonScrollableListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/trailerList"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/fav"
+            android:divider="@null"
+            android:dividerHeight="0px"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/movieId"
+            android:layout_below="@+id/rating"
+            android:textSize="2dp"
+            android:textColor="#2f2f2f"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:textAlignment="center"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favQues"
+            android:id="@+id/fav"
+            android:layout_below="@+id/trailer"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"/>
+
+    </RelativeLayout>
+</ScrollView>

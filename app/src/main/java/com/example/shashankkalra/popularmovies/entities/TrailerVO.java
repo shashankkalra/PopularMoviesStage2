@@ -1,4 +1,4 @@
-package com.example.shashankkalra.popularmovies;
+package com.example.shashankkalra.popularmovies.entities;
 
 /**
  * Created by shashankkalra on 03/04/16.

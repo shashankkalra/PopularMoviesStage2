@@ -1,10 +1,14 @@
-package com.example.shashankkalra.popularmovies;
+package com.example.shashankkalra.popularmovies.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
+
+import com.example.shashankkalra.popularmovies.R;
+import com.example.shashankkalra.popularmovies.adapters.ReviewAdapter;
+import com.example.shashankkalra.popularmovies.entities.ReviewVO;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

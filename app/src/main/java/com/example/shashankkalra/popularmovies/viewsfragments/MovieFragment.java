@@ -1,7 +1,6 @@
-package com.example.shashankkalra.popularmovies;
+package com.example.shashankkalra.popularmovies.viewsfragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,6 +18,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.shashankkalra.popularmovies.R;
+import com.example.shashankkalra.popularmovies.activities.MainActivity;
+import com.example.shashankkalra.popularmovies.adapters.MovieAdapter;
+import com.example.shashankkalra.popularmovies.entities.MovieVO;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -34,7 +38,8 @@ import java.util.Set;
 public class MovieFragment extends Fragment {
     String LOG_TAG="sk";
     MovieAdapter madapter;
-    String sort_type="popularity";
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor preferencesEditor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,7 @@ public class MovieFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        fetchMovieData(sort_type, null);
+        fetchMovieData();
     }
 
     private boolean isNetworkAvailable() {
@@ -55,10 +60,13 @@ public class MovieFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void fetchMovieData(String sort_type, String favs){
+    private void fetchMovieData(){
         if(isNetworkAvailable()) {
+            preferences = getActivity().getSharedPreferences("favs",Context.MODE_APPEND);
+            String sortPreference = preferences.getString("sort_by","popular");
+            String favs = String.valueOf(preferences.getBoolean("onlyfavs",false));
             PopulateMovie populateMovie = new PopulateMovie();
-            populateMovie.execute(sort_type,favs);
+            populateMovie.execute(sortPreference,favs);
         }else {
             Toast.makeText(getContext(),"Unable to retrieve movie details. Check your internet connection.",Toast.LENGTH_LONG).show();
         }
@@ -69,22 +77,29 @@ public class MovieFragment extends Fragment {
         inflater.inflate(R.menu.sorting_options,menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        preferences = getActivity().getSharedPreferences("favs",Context.MODE_APPEND);
+        preferencesEditor = preferences.edit();
+
         if(item.getItemId()==R.id.sort_by_popularity){
-            sort_type="popularity";
-            fetchMovieData(sort_type,null);
-            return true;
+            preferencesEditor.putString("sort_by","popular");
+            preferencesEditor.putBoolean("onlyfavs",false);
         }
         if(item.getItemId()==R.id.sort_by_rating){
-            sort_type="vote_average";
-            fetchMovieData(sort_type,null);
+            preferencesEditor.putString("sort_by","top_rated");
+            preferencesEditor.putBoolean("onlyfavs",false);
         }
         if(item.getItemId()==R.id.favourites){
-            fetchMovieData(sort_type,"favs");
+            preferencesEditor.putBoolean("onlyfavs",true);
         }
 
-//        fetchMovieData(sort_type);
+        preferencesEditor.commit();
+
+        fetchMovieData();
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -95,21 +110,32 @@ public class MovieFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         GridView gridView = (GridView) rootView.findViewById(R.id.grids);
         gridView.setAdapter(madapter);
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MovieVO movie = (MovieVO) parent.getItemAtPosition(position);
-                Intent i = new Intent(getContext(), MovieDetail.class);
-                i.putExtra("name", movie.getName());
-                i.putExtra("url",movie.imageUrl);
-                i.putExtra("rating", movie.getRating());
-                i.putExtra("releaseDate", movie.getReleaseDate());
-                i.putExtra("overview", movie.getOverview());
-                i.putExtra("id",movie.getId());
-                startActivity(i);
+                if (movie != null) {
+                    ((MainActivity) getActivity()).onItemSelected(movie);
+                }
+
             }
         });
-        fetchMovieData(sort_type, null);
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                MovieVO movie = (MovieVO) parent.getItemAtPosition(position);
+//                Intent i = new Intent(getContext(), MovieDetailActivity.class);
+//                i.putExtra("name", movie.getName());
+//                i.putExtra("url",movie.getImageUrl());
+//                i.putExtra("rating", movie.getRating());
+//                i.putExtra("releaseDate", movie.getReleaseDate());
+//                i.putExtra("overview", movie.getOverview());
+//                i.putExtra("id",movie.getId());
+//                startActivity(i);
+//            }
+//        });
+        fetchMovieData();
         return  rootView;
     }
 
@@ -119,17 +145,11 @@ public class MovieFragment extends Fragment {
         String movies_detail=null;
         @Override
         protected List<MovieVO> doInBackground(String... params) {
-            final String BASE_URL="http://api.themoviedb.org/3";
-            final String DISCOVER="/discover";
-            final String BY_MOVIE="/movie";
-            final String SORT_BY="?sort_by="+params[0]+".desc";
-//            final String SORT_BY_POP="?sort_by=popularity.desc";
-//            final String SORT_BY_RATINGS="?sort_by=vote_average.desc";
+            final String BASE_URL="http://api.themoviedb.org/3/movie/";
 
-
-            //Please enter your own API KEY in place of <YOUR_API_KEY> in below line before building the code
-            final String API_KEY="&api_key="+getString(R.string.api_key);
-            String path=BASE_URL+DISCOVER+BY_MOVIE+SORT_BY+API_KEY;
+            //Please enter your own API KEY in place of <YOUR_API_KEY> in strings.xml
+            final String API_KEY="?api_key="+getString(R.string.api_key);
+            String path=BASE_URL+params[0]+API_KEY;
 
             try{
                 URL url=new URL(path);
@@ -190,9 +210,9 @@ public class MovieFragment extends Fragment {
                     temp_movieVO.setOverview(movieObject.getString(OVER_VIEW));
                     temp_movieVO.setRating(movieObject.getDouble(RATINGS));
                     temp_movieVO.setReleaseDate(movieObject.getString(RELEASE_DATE));
-                    if(favourite == null)
+                    if(favourite == null || favourite.equalsIgnoreCase("false"))
                         movies.add(temp_movieVO);
-                    if(favourite != null)
+                    if(favourite != null && favourite.equalsIgnoreCase("true"))
                         if(favs != null && favs.contains(temp_movieVO.getName()))
                             movies.add(temp_movieVO);
                 }

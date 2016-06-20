@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/application_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,13 +23,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MovieDetail"
+            android:name=".activities.MovieDetailActivity"
             android:label="@string/movie_detail_title"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ReviewActivity"
+            android:name=".activities.ReviewActivity"
             android:label="@string/title_activity_review"
-            android:parentActivityName=".MovieDetail"
+            android:parentActivityName=".activities.MovieDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

@@ -6,7 +6,7 @@
     android:id="@+id/list_layout"
     android:background="#00aaaa"
     android:layout_marginTop="16dp"
-    tools:context="com.example.shashankkalra.popularmovies.MovieFragment">
+    tools:context=".viewsfragments.MovieFragment">
     <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

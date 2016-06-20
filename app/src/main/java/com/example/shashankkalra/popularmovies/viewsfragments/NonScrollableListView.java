@@ -1,4 +1,4 @@
-package com.example.shashankkalra.popularmovies;
+package com.example.shashankkalra.popularmovies.viewsfragments;
 
 import android.content.Context;
 import android.util.AttributeSet;

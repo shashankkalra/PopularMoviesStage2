@@ -1,4 +1,4 @@
-package com.example.shashankkalra.popularmovies;
+package com.example.shashankkalra.popularmovies.adapters;
 
 import android.content.Context;
 import android.text.Html;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.shashankkalra.popularmovies.R;
+import com.example.shashankkalra.popularmovies.entities.TrailerVO;
 
 import java.util.ArrayList;
 
@@ -19,7 +22,7 @@ import java.util.ArrayList;
 public class TrailerAdapter extends ArrayAdapter<TrailerVO>{
     LayoutInflater inflater;
     Context context;
-    TrailerAdapter(Context context, int id, ArrayList<TrailerVO> trailerVOs){
+    public TrailerAdapter(Context context, int id, ArrayList<TrailerVO> trailerVOs){
         super(context, id, trailerVOs);
         this.context=context;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
